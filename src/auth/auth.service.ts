@@ -1,5 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { Injectable } from '@nestjs/common';
+import { AuthTokenDto } from './DTO/auth-token-dto';
 
 @Injectable()
 export class AuthService {
@@ -8,11 +9,16 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signIn(): Promise<string> {
+  async signIn(authTokenDto: AuthTokenDto): Promise<string> {
     // In the real-world app you shouldn't expose this method publicly
     // instead, return a token once you verify user credentials
-    const user = { email: 'user@email.com' };
-    return this.jwtService.sign(user);
+    return this.jwtService.sign(authTokenDto);
+  }
+
+  async verify(token: string): Promise<any> {
+    // In the real-world app you shouldn't expose this method publicly
+    // instead, return a token once you verify user credentials
+    return this.jwtService.verify(token);
   }
 
   async validateUser(payload: any): Promise<any> {

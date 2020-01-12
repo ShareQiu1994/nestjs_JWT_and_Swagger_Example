@@ -1,17 +1,24 @@
-// import { Controller, Post, Body } from '@nestjs/common';
-// import { AuthService } from './auth.service';
-
-import { Get, Controller } from '@nestjs/common';
+import { Get, Controller, Post, Body, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiQuery } from '@nestjs/swagger';
+import { AuthTokenDto } from './DTO/auth-token-dto';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get('getToken')
-  async createToken(): Promise<any> {
-    return await this.authService.signIn();
+  @Post('signInToken') // 注册token
+  async createToken(@Body() authTokenDto: AuthTokenDto): Promise<any> {
+    return await this.authService.signIn(authTokenDto);
+  }
+
+  @Get('verifyToken') // 解析token
+  @ApiQuery({
+    name: 'token',
+    description: '请输入token',
+  })
+  async analysisToken(@Query('token') token: string): Promise<any> {
+    return await this.authService.verify(token);
   }
 }
