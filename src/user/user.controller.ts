@@ -15,8 +15,7 @@ import {
   ApiParam,
   ApiOperation,
 } from '@nestjs/swagger';
-import { UserAddDTO } from './DTO/user-add-dto';
-import { UserUpdateDTO } from './DTO/user-update-dto';
+import { UserDTO } from './DTO/user-dto';
 
 @ApiTags('user')
 @ApiBearerAuth() // 在线文档增加登录鉴权 (Swagger)
@@ -57,18 +56,23 @@ export class UserController {
   // 新增用户
   @Post()
   @ApiOperation({ summary: '新增用户' })
-  addUser(@Body() UserAddDTO: UserAddDTO) {
+  addUser(@Body() UserDTO: UserDTO) {
     return {
-      UserAddDTO,
+      UserDTO,
     };
   }
 
   // 修改用户
-  @Put()
+  @Put(':id')
+  @ApiParam({
+    name: 'id',
+    description: '参数id',
+  })
   @ApiOperation({ summary: '修改用户' })
-  updateUser(@Body() UserUpdateDTO: UserUpdateDTO) {
+  updateUser(@Param('id') id: Number, @Body() UserDTO: UserDTO) {
     return {
-      UserUpdateDTO,
+      id: id,
+      UserDTO,
     };
   }
 

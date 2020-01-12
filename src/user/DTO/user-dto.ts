@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserUpdateDTO {
+export class UserDTO {
   @ApiProperty({
     maxLength: 10,
     description: 'Username',
@@ -9,7 +9,4 @@ export class UserUpdateDTO {
 
   @ApiProperty()
   age: number;
-
-  @ApiProperty()
-  id: number;
 }
