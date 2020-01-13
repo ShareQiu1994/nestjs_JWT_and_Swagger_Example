@@ -3,6 +3,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { join } from 'path';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -16,6 +17,9 @@ async function bootstrap() {
   /* 配置模板引擎 */
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('ejs'); //配置模板引擎类型 必须提前安装好依赖
+
+  /* 使用全局管道 http请求产生数据验证,数据转换 */
+  app.useGlobalPipes(new ValidationPipe());
 
   const options = new DocumentBuilder()
     .setTitle('liubf Api')
